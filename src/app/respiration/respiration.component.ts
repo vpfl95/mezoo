@@ -24,11 +24,7 @@ export class RespirationComponent implements OnInit {
   private svg: any;
   private line: d3Shape.Line<[number, number]>;
   private path: any;
-  private data: Array<any> = new Array(100).fill(0);  
-
-  //myWebSocket: WebSocketSubject<any> = webSocket('ws://192.168.0.97:3000/');
-
-
+  private data: Array<any> = new Array(100).fill([0]);  
   
   constructor(private dataService: DataService) {
       this.width = 500 - this.margin.left - this.margin.right;
@@ -36,20 +32,20 @@ export class RespirationComponent implements OnInit {
 
   }
 
- ngOnInit() {
-    
+ ngOnInit() { 
     this.dataService.onMessage().subscribe(
         msg => {
-            console.log(msg);
-            this.data.push(msg);
+            console.log(this.data);
+            //console.log(msg);
+            this.data.push(msg.RespirationSignal);
             this.updateChart();
         },
         err => console.log(err),
         () => console.log('end')
       );
-  
 }
-    
+
+//차트 만들기
     private createChart(){
         this.initSvg();
         this.initAxis();
@@ -57,15 +53,16 @@ export class RespirationComponent implements OnInit {
         this.drawLine();
     }
 
+//svg
     private initSvg() {
         this.svg = d3.select('svg')
             .append('g')
             .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')')
             .attr("style","outline: thin solid black;")
             ;
-
     }
 
+//x축, y축 설정
     private initAxis() {
         this.xScale = d3Scale.scaleLinear()
             .domain([0,105])
@@ -75,6 +72,8 @@ export class RespirationComponent implements OnInit {
             .range([this.height, 0]);
     }
 
+
+//x축, y축 그리기
     private drawAxis() {
 
         this.svg.append('g')
@@ -93,11 +92,13 @@ export class RespirationComponent implements OnInit {
             .style('text-anchor', 'end');
     }
 
+
+//그래프 그리기
     private drawLine() {
        
         this.line = d3Shape.line()
             .x( (d,i) => this.xScale(i))
-            .y( (d: any) => this.yScale(d.RespirationSignal));
+            .y( (d: any) => this.yScale(d[0]));
 
         this.path=this.svg
             .append('path')
@@ -108,9 +109,10 @@ export class RespirationComponent implements OnInit {
             .attr("stroke-width", "1px")
             .attr("width",500)
             .attr('d', this.line);
-             
     }
 
+
+//그래프 업데이트
     private updateChart(){
         if (!this.svg) {
             this.createChart();
@@ -125,7 +127,6 @@ export class RespirationComponent implements OnInit {
             .ease(d3.easeSin)
            // .attr("transform", "translate(" + this.xScale(-1) + ",0)")
             ;
-  
         this.data.shift();
     }
  

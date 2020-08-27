@@ -12,7 +12,7 @@ export class DataService {
   myWebSocket: WebSocketSubject<any> = webSocket('ws://192.168.0.97:3000/');
 
   constructor(){
-    this.myWebSocket.next({message: 'service connected'});
+    //this.myWebSocket.next({message: 'service connected'});
     
     this.myWebSocket.subscribe(
       msg => {this.messages.next(msg);},
