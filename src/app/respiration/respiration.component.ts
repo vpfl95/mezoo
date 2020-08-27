@@ -24,9 +24,10 @@ export class RespirationComponent implements OnInit {
   private svg: any;
   private line: d3Shape.Line<[number, number]>;
   private path: any;
-
-  myWebSocket: WebSocketSubject<any> = webSocket('ws://192.168.0.97:3000/');
   private data: Array<any> = new Array(100).fill(0);  
+
+  //myWebSocket: WebSocketSubject<any> = webSocket('ws://192.168.0.97:3000/');
+
 
   
   constructor(private dataService: DataService) {
@@ -36,28 +37,19 @@ export class RespirationComponent implements OnInit {
   }
 
  ngOnInit() {
-    //this.myWebSocket.next({message: 'angular'});
-
-    this.myWebSocket.subscribe(
+    
+    this.dataService.onMessage().subscribe(
         msg => {
-        //console.log(msg); 
-        this.data.push(msg);
-       // console.log(msg); 
-        this.updateChart();
-        }, 
-        err => console.log(err), 
-        () => console.log('complete')
-        
-    );
-   
+            console.log(msg);
+            this.data.push(msg);
+            this.updateChart();
+        },
+        err => console.log(err),
+        () => console.log('end')
+      );
   
 }
     
-    // getData(): void{
-    //     console.log(this.datas);
-    //     this.dataService.getData()
-    //         .subscribe(data => this.datas = data);
-    // }
     private createChart(){
         this.initSvg();
         this.initAxis();
@@ -76,7 +68,7 @@ export class RespirationComponent implements OnInit {
 
     private initAxis() {
         this.xScale = d3Scale.scaleLinear()
-            .domain([0,100])
+            .domain([0,105])
             .range([0, this.width]);
         this.yScale = d3Scale.scaleLinear()
             .domain([-5000,20000])
@@ -129,8 +121,8 @@ export class RespirationComponent implements OnInit {
             .attr('d', this.line)
             .attr('transform', null)
             .transition() // Call Transition Method
-            .duration(10000) // Set Duration timing (ms)
-            .ease(d3.easeLinear)
+            .duration(5000) // Set Duration timing (ms)
+            .ease(d3.easeSin)
            // .attr("transform", "translate(" + this.xScale(-1) + ",0)")
             ;
   

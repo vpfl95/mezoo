@@ -22,10 +22,9 @@ export class EcgComponent implements OnInit {
   private yScale: any;
   private svg: any;
   private line: d3Shape.Line<[number, number]>;
-  private a: any[] = [];
   private path: any;
-  private data: Array<any> = new Array(100).fill(0); 
-    
+  private data:Array<any> = new Array(10);
+ 
   myWebSocket: WebSocketSubject<any> = webSocket('ws://192.168.0.97:3000/');
 
   constructor() {
@@ -34,26 +33,17 @@ export class EcgComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.myWebSocket.subscribe(
-      msg => {
-      //console.log(msg); 
-      this.data.push(msg);
-      console.log(msg); 
-      this.updateChart();
-      }, 
-      err => console.log(err), 
-      () => console.log('complete')  
-  );
-
-  this.data.forEach((d, i) => {
-    for (let j = 0; j < d.ECGWaveform.length; j++) {
-      this.a.push({
-        ecg_x: i * d.ECGWaveform.length + j,
-        ecg_y: d.ECGWaveform[j]
-      })
-    }
-  })
-  console.log(this.a);
+  //   this.myWebSocket.subscribe(
+  //     msg => {
+  //     //console.log(msg); 
+  //     this.data.push({ECGWavefrom: msg.ECGWaveform});
+  //     console.log(this.data); 
+  //    // this.updateChart();
+  //     }, 
+  //     err => console.log(err), 
+  //     () => console.log('complete')  
+  // );
+  // this.createChart();
 }
 
   private createChart(){
@@ -95,39 +85,41 @@ export class EcgComponent implements OnInit {
       .attr('transform', 'rotate(-90)')
       .attr('y', 6)
       .attr('dy', '.71em')
-      .style('text-anchor', 'end')
-      .text('Price ($)');
+      .style('text-anchor', 'end');
   }
 
   private drawLine() {
     this.line = d3Shape.line()
-      .x((d: any) => this.xScale(d.ecg_x))
-      .y((d: any) => this.yScale(d.ecg_y));
+      .x((d,i) => this.xScale(i))
+      .y((d: any) => this.yScale(d.ECGWaveform));
 
     this.path=this.svg.append('path')
-      .datum(this.a)
+      .datum(this.data)
       .attr('class', 'line')
       .attr("fill", "none")
       .attr("stroke", "red")
       .attr("stroke-width", "1px")
+      .attr("width",500)
       .attr('d', this.line);
   }
  
-  private updateChart(){
-    if (!this.svg) {
-        this.createChart();
-        return;
-    }
-    console.log(this.data);
-    this.path   
-        .attr('d', this.line)
-        .attr('transform', null)
-        .transition() // Call Transition Method
-        .duration(10000) // Set Duration timing (ms)
-        .ease(d3.easeLinear)
-       // .attr("transform", "translate(" + this.xScale(-1) + ",0)")
-        ;
+  // private updateChart(){
+  //   if (!this.svg) {
+  //       this.createChart();
+  //       return;
+  //   }
+  //   console.log(this.data);
+    
+  //   this.path   
+  //       .attr('d', this.line)
+  //       .attr('transform', null)
+  //       .transition() // Call Transition Method
+  //       .duration(10000) // Set Duration timing (ms)
+  //       .ease(d3.easeLinear)
+  //      // .attr("transform", "translate(" + this.xScale(-1) + ",0)")
+  //       ;
 
-    this.data.shift();
-}
+  //   this.data.shift();
+  // }
+
 }

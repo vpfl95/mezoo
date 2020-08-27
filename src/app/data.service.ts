@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { webSocket, WebSocketSubject } from "rxjs/webSocket";
 
 @Injectable({
@@ -7,31 +7,32 @@ import { webSocket, WebSocketSubject } from "rxjs/webSocket";
 })
 export class DataService {
 
-  private _socketUrl: string;
+  private messages = new Subject<any>();
+
   myWebSocket: WebSocketSubject<any> = webSocket('ws://192.168.0.97:3000/');
-  testData: string;
-  data: any[];
 
-  constructor() { 
-    this.myWebSocket.next({message: 'angular'});
-
+  constructor(){
+    this.myWebSocket.next({message: 'service connected'});
+    
     this.myWebSocket.subscribe(
-      msg => {
-        //console.log(msg);
-        this.data=msg;
-        //console.log(this.data);
-      }, 
-      err => console.log(err), 
+      msg => {this.messages.next(msg);},
+      err => {console.log(err);},
       () => console.log('complete')
     );
   }
 
-  getData(): Observable<any[]>{
-    return of(this.data)
+  onMessage(): Observable<any> {
+    return this.messages.asObservable();
   }
 
-  ngOnInit(): void {
-    
+  subscribe(){
+    //this.myWebSocket.next({message: 'testststes'});
+    this.myWebSocket.subscribe(
+      msg => {console.log(msg); this.messages.next(msg);},
+      err => {console.log(err);},
+      () => console.log('complete')
+    );
   }
+
 
 }
