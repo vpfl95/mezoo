@@ -24,7 +24,7 @@ export class RespirationComponent implements OnInit {
   private svg: any;
   private line: d3Shape.Line<[number, number]>;
   private path: any;
-  private data: Array<any> = new Array(100).fill([0]);  
+  private data: Array<any> = new Array(100).fill([8000]);  
   
   constructor(private dataService: DataService) {
       this.width = 500 - this.margin.left - this.margin.right;
@@ -35,7 +35,7 @@ export class RespirationComponent implements OnInit {
  ngOnInit() { 
     this.dataService.onMessage().subscribe(
         msg => {
-            console.log(this.data);
+            // console.log(this.data);
             //console.log(msg);
             this.data.push(msg.RespirationSignal);
             this.updateChart();
@@ -55,10 +55,10 @@ export class RespirationComponent implements OnInit {
 
 //svg
     private initSvg() {
-        this.svg = d3.select('svg')
+        this.svg = d3.select('#svg2')
             .append('g')
             .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')')
-            .attr("style","outline: thin solid black;")
+            .attr("style","outline: thin solid white;")
             ;
     }
 
@@ -106,7 +106,7 @@ export class RespirationComponent implements OnInit {
             .attr('class', 'line')
             .attr("fill", "none")
             .attr("stroke", "blue")
-            .attr("stroke-width", "1px")
+            .attr("stroke-width", "2px")
             .attr("width",500)
             .attr('d', this.line);
     }

@@ -4,12 +4,14 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { EcgComponent } from './ecg/ecg.component';
 import { RespirationComponent } from './respiration/respiration.component';
+import { InformationComponent } from './information/information.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EcgComponent,
-    RespirationComponent
+    RespirationComponent,
+    InformationComponent
   ],
   imports: [
     BrowserModule

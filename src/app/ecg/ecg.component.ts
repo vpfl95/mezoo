@@ -24,8 +24,8 @@ export class EcgComponent implements OnInit {
   private svg: any;
   private line: d3Shape.Line<[number, number]>;
   private path: any;
-  private data:Array<any> = new Array(100).fill([0,0,0,0,0,0,0,0,0,0]);
-  //private data:any[]=[];
+  private data:Array<any> = new Array(100).fill([8000,8000,8000,8000,8000,8000,8000,8000,8000,8000]);
+  ArrhythmiaAnnotation: any=0;
 
   constructor(private dataService: DataService) {
     this.width = 500 - this.margin.left - this.margin.right;
@@ -35,8 +35,15 @@ export class EcgComponent implements OnInit {
   ngOnInit() {
   this.dataService.onMessage().subscribe(
     msg => {
-        // console.log(this.data);
+        //console.log(msg);
         this.data.push(msg.ECGWaveform);
+        if(msg.ArrhythmiaAnnotation>0){
+          this.ArrhythmiaAnnotation=msg.ArrhythmiaAnnotation;
+        }
+        else{
+          this.ArrhythmiaAnnotation=0;
+        }
+        console.log(this.ArrhythmiaAnnotation);
         this.updateChart();
     },
     err => console.log(err),
@@ -55,10 +62,12 @@ export class EcgComponent implements OnInit {
 
 //svg
   private initSvg() {
-    this.svg = d3.select('#svg2')
+    this.svg = d3.select('#svg1')
       .append('g')
       .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')')
-      .attr("style","outline: thin solid black;");
+      .attr("style","outline: thin solid white;")
+      
+      ;
   }
 
 
@@ -75,10 +84,10 @@ export class EcgComponent implements OnInit {
 
 //x축, y축 그리기
   private drawAxis() {
-    this.svg.append('g')
-      .attr('class', 'axis axis--x')
-      .attr('transform', 'translate(0,' + this.height + ')')
-      .call(d3Axis.axisBottom(this.xScale));
+    // this.svg.append('g')
+    //   .attr('class', 'axis axis--x')
+    //   .attr('transform', 'translate(0,' + this.height + ')')
+    //   .call(d3Axis.axisBottom(this.xScale));
 
     this.svg.append('g')
       .attr('class', 'axis axis--y')
@@ -103,8 +112,8 @@ export class EcgComponent implements OnInit {
       .datum(this.data)
       .attr('class', 'line')
       .attr("fill", "none")
-      .attr("stroke", "red")
-      .attr("stroke-width", "1px")
+      .attr("stroke", "green")
+      .attr("stroke-width", "2px")
       .attr("width",500)
       .attr('d', this.line);
   }
