@@ -1,1 +1,45 @@
-<p>information works!</p>
+<div class="container">
+    <div class="item" style="text-align:center; background-color: green; line-height: 150%;">
+        HeartRate<br>{{HeartRate}}
+    </div>
+
+    <div class="item" style="text-align:center; background-color: green; line-height: 150%;">
+        RespirationRate<br> {{RespirationRate}}
+    </div>
+
+    <div class="item" style="text-align:center; background-color: green; line-height: 150%;">
+        Temperature<br> {{Temperature}}
+    </div>
+
+    <div class="item" style="text-align:center;">
+        <mat-icon class="motion" *ngIf="MotionStatus===0 else not0" 
+        style="color: yellow;" >hotel</mat-icon>
+    </div>
+    <ng-template #not0>
+        <mat-icon class="motion">hotel</mat-icon>
+    </ng-template>
+
+    <div class="item" style="text-align:center;">
+        <mat-icon class="motion" *ngIf="MotionStatus===1 else not1"
+        style="color: yellow;">accessibility</mat-icon>
+    </div>
+    <ng-template #not1>
+        <mat-icon class="motion">accessibility</mat-icon>
+    </ng-template>
+
+    <div class="item" style="text-align:center;">
+        <mat-icon class="motion" *ngIf="MotionStatus===2 else not2"
+        style="color: yellow;">directions_walk</mat-icon>
+    </div>
+    <ng-template #not2>
+        <mat-icon class="motion">directions_walk</mat-icon>
+    </ng-template>
+
+    <div class="item" style="text-align:center;">
+        <mat-icon class="motion" *ngIf="MotionStatus===3 else not3"
+        style="color: yellow;">directions_run</mat-icon>
+    </div>
+    <ng-template #not3>
+        <mat-icon class="motion">directions_run</mat-icon>
+    </ng-template>
+</div>

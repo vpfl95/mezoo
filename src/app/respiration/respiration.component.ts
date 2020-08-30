@@ -28,11 +28,14 @@ export class RespirationComponent implements OnInit {
   
   constructor(private dataService: DataService) {
       this.width = 500 - this.margin.left - this.margin.right;
-      this.height = 250 - this.margin.top - this.margin.bottom;
+      this.height = 125 - this.margin.top - this.margin.bottom;
 
   }
 
  ngOnInit() { 
+    this.initSvg();
+    this.initAxis();
+    this.drawAxis();
     this.dataService.onMessage().subscribe(
         msg => {
             // console.log(this.data);
@@ -55,7 +58,7 @@ export class RespirationComponent implements OnInit {
 
 //svg
     private initSvg() {
-        this.svg = d3.select('#svg2')
+        this.svg = d3.select('.respiration')
             .append('g')
             .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')')
             .attr("style","outline: thin solid white;")

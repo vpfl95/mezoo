@@ -29,10 +29,13 @@ export class EcgComponent implements OnInit {
 
   constructor(private dataService: DataService) {
     this.width = 500 - this.margin.left - this.margin.right;
-    this.height = 250 - this.margin.top - this.margin.bottom;
+    this.height = 125 - this.margin.top - this.margin.bottom;
   }
 
   ngOnInit() {
+    this.initSvg();
+    this.initAxis();
+    this.drawAxis();
   this.dataService.onMessage().subscribe(
     msg => {
         //console.log(msg);
@@ -43,7 +46,7 @@ export class EcgComponent implements OnInit {
         else{
           this.ArrhythmiaAnnotation=0;
         }
-        console.log(this.ArrhythmiaAnnotation);
+        // console.log(this.ArrhythmiaAnnotation);
         this.updateChart();
     },
     err => console.log(err),
@@ -62,7 +65,7 @@ export class EcgComponent implements OnInit {
 
 //svg
   private initSvg() {
-    this.svg = d3.select('#svg1')
+    this.svg = d3.select('.ecg')
       .append('g')
       .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')')
       .attr("style","outline: thin solid white;")
@@ -84,10 +87,10 @@ export class EcgComponent implements OnInit {
 
 //x축, y축 그리기
   private drawAxis() {
-    // this.svg.append('g')
-    //   .attr('class', 'axis axis--x')
-    //   .attr('transform', 'translate(0,' + this.height + ')')
-    //   .call(d3Axis.axisBottom(this.xScale));
+    this.svg.append('g')
+      .attr('class', 'axis axis--x')
+      .attr('transform', 'translate(0,' + this.height + ')')
+      .call(d3Axis.axisBottom(this.xScale));
 
     this.svg.append('g')
       .attr('class', 'axis axis--y')

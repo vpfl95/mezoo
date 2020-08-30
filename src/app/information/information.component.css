@@ -1,0 +1,24 @@
+h2{
+    color: white;
+}
+div{
+    color:white;
+}
+
+
+.container {
+    
+    width: 600px;
+    height: 50px;
+    display: grid;
+    grid-template-columns: repeat(7,1fr);
+}
+.item{
+    background-color: green;
+    border: 1px solid palegreen;
+    font-size: 15px;
+}
+.motion{
+    font-size: 50px;
+    padding-right: 30%;
+}
