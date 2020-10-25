@@ -9,7 +9,7 @@ export class DataService {
 
   private messages = new Subject<any>();
 
-  myWebSocket: WebSocketSubject<any> = webSocket('ws://192.168.0.97:3000/');
+  myWebSocket: WebSocketSubject<any> = webSocket('ws://192.168.0.6:3000/');
 
   constructor(){
     //this.myWebSocket.next({message: 'service connected'});
@@ -20,7 +20,15 @@ export class DataService {
       () => console.log('complete')
     );
   }
-
+  sendHistory(){
+    this.myWebSocket.next({message: 'history'});
+  }
+  sendMonitor(){
+    this.myWebSocket.next({message: 'monitor'});
+  }
+  sendDevice(device:any){
+    this.myWebSocket.next({message: device });
+  }
   onMessage(): Observable<any> {
     return this.messages.asObservable();
   }

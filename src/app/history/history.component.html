@@ -1,0 +1,8 @@
+<p>history works!</p>
+<ul class="devices">
+    <li *ngFor="let device of deviceNumbers" >
+        <a routerLink="/history/{{device}}" (click)="onSelect(device)">
+            <span class="badge">ID</span>{{device}}
+        </a>
+    </li>
+</ul>

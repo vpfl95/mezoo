@@ -29,11 +29,12 @@ export class InformationComponent implements OnInit {
             this.RespirationRate = msg.RespirationRate;
           }
           if(msg.Temperature!=null){
-            this.Temperature = msg.Temperature;
+            this.Temperature = msg.Temperature/10;
           }
+          if(msg.MotionStatus!=null){
           this.MotionStatus = msg.MotionStatus;
-        //  this.data.push(msg);
-        //  console.log(this.data);
+          //console.log(this.MotionStatus);
+          }
       },
       err => console.log(err),
       () => console.log('end')

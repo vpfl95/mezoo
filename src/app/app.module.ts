@@ -9,6 +9,10 @@ import { InformationComponent } from './information/information.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
 import { MapComponent } from './map/map.component';
+import { AppRoutingModule } from './app-routing.module';
+import { MonitorComponent } from './monitor/monitor.component';
+import { HistoryComponent } from './history/history.component';
+import { EcgHistoryComponent } from './ecg-history/ecg-history.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +20,10 @@ import { MapComponent } from './map/map.component';
     EcgComponent,
     RespirationComponent,
     InformationComponent,
-    MapComponent
+    MapComponent,
+    MonitorComponent,
+    HistoryComponent,
+    EcgHistoryComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +31,8 @@ import { MapComponent } from './map/map.component';
     MatIconModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCx86vDGeGD9pUfV8GL4pIrGzMIq5V6K5o'
-    })
+    }),
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

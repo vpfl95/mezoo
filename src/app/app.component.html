@@ -1,18 +1,6 @@
-<div class="container1">
-    <div class="item1">
-        <app-ecg></app-ecg>
-    </div>
-
-    <div class="item1">
-        <app-map></app-map>
-    </div>
-    
-    <div class="item1">
-        <app-respiration></app-respiration>
-    </div>
-
-    <div class="item1">
-        <app-information></app-information>
-    </div>
-   
-</div>
+<nav>
+    <a routerLink="/monitor" (click)="sendMonitor();">Monitor</a>
+    <a routerLink="/history" (click)="sendHistory();">History</a>
+</nav>
+<br>
+<router-outlet></router-outlet>

@@ -24,23 +24,24 @@ export class RespirationComponent implements OnInit {
   private svg: any;
   private line: d3Shape.Line<[number, number]>;
   private path: any;
+  private xAxis: any;
+  private yAxis: any;
+  private xAxisGroup: any;
+  private yAxisGroup: any;
   private data: Array<any> = new Array(100).fill([8000]);  
   
   constructor(private dataService: DataService) {
-      this.width = 500 - this.margin.left - this.margin.right;
-      this.height = 125 - this.margin.top - this.margin.bottom;
+      this.width = 430 - this.margin.left - this.margin.right;
+      this.height = 110 - this.margin.top - this.margin.bottom;
 
   }
 
  ngOnInit() { 
-    this.initSvg();
-    this.initAxis();
-    this.drawAxis();
     this.dataService.onMessage().subscribe(
         msg => {
-            // console.log(this.data);
             //console.log(msg);
             this.data.push(msg.RespirationSignal);
+            //console.log(this.data);
             this.updateChart();
         },
         err => console.log(err),
@@ -60,8 +61,7 @@ export class RespirationComponent implements OnInit {
     private initSvg() {
         this.svg = d3.select('.respiration')
             .append('g')
-            .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')')
-            .attr("style","outline: thin solid white;")
+            .attr('transform', 'translate(' + -1 + ',' + 50 + ')')
             ;
     }
 
@@ -71,25 +71,24 @@ export class RespirationComponent implements OnInit {
             .domain([0,105])
             .range([0, this.width]);
         this.yScale = d3Scale.scaleLinear()
-            .domain([-5000,20000])
+            .domain([0,d3.max(this.data)])
             .range([this.height, 0]);
     }
 
 
 //x축, y축 그리기
     private drawAxis() {
-
-        this.svg.append('g')
+        this.xAxis=d3Axis.axisBottom(this.xScale);
+        this.xAxisGroup=this.svg.append('g')
             .attr('class', 'axis axis--x')
             .attr('transform', 'translate(0,' + this.height + ')')
-            .call(d3Axis.axisBottom(this.xScale));
+            .call( this.xAxis);
 
-        this.svg.append('g')
+        this.yAxis=d3Axis.axisLeft(this.yScale)
+        this.yAxisGroup=this.svg.append('g')
             .attr('class', 'axis axis--y')
-            .call(d3Axis.axisLeft(this.yScale))
-            .append('text')
+            .call(this.yAxis)
             .attr('class', 'axis-title')
-            .attr('transform', 'rotate(-90)')
             .attr('y', 6)
             .attr('dy', '.71em')
             .style('text-anchor', 'end');
@@ -108,7 +107,7 @@ export class RespirationComponent implements OnInit {
             .datum(this.data)
             .attr('class', 'line')
             .attr("fill", "none")
-            .attr("stroke", "blue")
+            .attr("stroke", "deepskyblue")
             .attr("stroke-width", "2px")
             .attr("width",500)
             .attr('d', this.line);
@@ -121,7 +120,13 @@ export class RespirationComponent implements OnInit {
             this.createChart();
             return;
         }
-        //console.log(this.data);
+        
+        this.yScale.domain(d3.extent(this.data,(d)=>d[0]))
+        //.domain([d3.min(this.data),d3.max(this.data)])
+        .range([this.height, 0]);
+        this.yAxis=d3Axis.axisLeft(this.yScale);
+        this.yAxisGroup.transition().call(this.yAxis);
+
         this.path   
             .attr('d', this.line)
             .attr('transform', null)
