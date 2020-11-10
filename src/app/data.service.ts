@@ -9,7 +9,7 @@ export class DataService {
 
   private messages = new Subject<any>();
 
-  myWebSocket: WebSocketSubject<any> = webSocket('ws://192.168.0.6:3000/');
+  myWebSocket: WebSocketSubject<any> = webSocket('ws://58.224.141.181:3000/');
 
   constructor(){
     //this.myWebSocket.next({message: 'service connected'});
