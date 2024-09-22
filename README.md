@@ -21,6 +21,9 @@ Mezoo의 심전도 측정기기 Hicardi와 모바일앱을 BLE통신으로 연�
 <img src="https://img.shields.io/badge/mongodb-47A248?style=flat-square&logo=mongodb&logoColor=white"/>
 <img src="https://img.shields.io/badge/nodedotjs-339933?style=flat-square&logo=nodedotjs&logoColor=white"/>
 
+# 아키텍처
+![mezoo](https://github.com/user-attachments/assets/d3eb06da-9a29-4b28-9743-16a20a7c8fd0)
+
 
 
 # 주요 기능
